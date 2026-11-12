@@ -1,49 +1,39 @@
-# Linear Regression for Stock-Price Modelling
+# Linear Regression and Lasso for Next-Day Equity Price Modelling
 
-A Jupyter Notebook project exploring whether a linear regression model can explain and predict equity price movements using historical market data and engineered technical features.
+A Jupyter Notebook study of ordinary least squares (OLS) and Lasso regression for modelling the next-day closing price of Apple (AAPL). The workflow uses historical prices for AAPL, AMZN, MSFT, QQQ and the S&P 500 Index as inputs.
 
-The workflow retrieves historical prices with Yahoo Finance, prepares explanatory variables, fits a linear regression model, compares fitted predictions with observed values, and examines model assumptions.
+## Research Workflow
 
-## Workflow
+1. Retrieve daily closing-price data from Yahoo Finance for the 2020–2024 modelling sample.
+2. Engineer one-day lag features and five-day moving averages for the selected instruments.
+3. Define the next trading day's AAPL closing price as the target.
+4. Fit an OLS regression, inspect its summary, and compare a reduced specification using lagged AAPL and S&P 500 prices.
+5. Examine regression diagnostics: linearity, residual-versus-fitted behaviour, variance inflation factors, residual normality, and Durbin–Watson statistic.
+6. Apply a chronological training/test split for a Lasso regression experiment and report R², MSE, and RMSE.
+7. Compare actual and predicted AAPL prices over a 2025 evaluation interval.
 
-1. Retrieve historical price data using `yfinance`.
-2. Construct and inspect explanatory features, including technical indicators.
-3. Fit a linear regression model.
-4. Compare actual and predicted values.
-5. Evaluate prediction errors and model behaviour.
-6. Examine ordinary least squares (OLS) assumptions.
+## Repository Contents
 
-## Instruments
-
-The notebook contains data for Apple (AAPL), Amazon (AMZN), Microsoft (MSFT), Invesco QQQ (QQQ), and the S&P 500 Index (^GSPC). See the notebook for the exact target variable, feature definitions, sample period, and specification.
-
-## Concepts
-
-- Ordinary least squares
-- Feature engineering and technical indicators
-- Train/test evaluation
-- Actual-versus-predicted diagnostics
-- Regression assumptions and residual analysis
+- Linerar_regression_stock_prediction.ipynb — full prediction workflow (filename retained as it currently exists in the repository).
+- Linear_Regression_Stock_Price.ipynb.ipynb — companion notebook.
 
 ## Technology
 
-Python · NumPy · pandas · yfinance · Matplotlib · Plotly · scikit-learn / statsmodels
+Python · NumPy · pandas · yfinance · Matplotlib · Plotly · statsmodels · scikit-learn · seaborn
 
 ## Run
 
-```bash
-pip install numpy pandas yfinance matplotlib plotly scikit-learn statsmodels jupyter
+~~~bash
+pip install -r requirements.txt
 jupyter notebook
-```
+~~~
 
-This repository contains more than one notebook. Execute the larger prediction notebook for the fuller workflow.
+Open the larger prediction notebook and execute cells in sequence. Market data is downloaded at runtime; historical observations and provider adjustments can change.
 
-## Modelling Considerations
+## Important Evaluation Caveat
 
-A high in-sample fit does not establish forecasting ability. Financial time series are noisy and non-stationary. A credible evaluation should use chronological splits, prevent look-ahead leakage during feature construction, compare with simple baselines, and report out-of-sample metrics.
-
-This project is an educational exploration and does not establish a profitable trading strategy.
+Price levels are often highly persistent, so a model can achieve apparently strong price-level fit without forecasting economically meaningful returns. A more rigorous extension should compare against a previous-close naïve forecast, use return or price-change targets, and report chronological out-of-sample MAE/RMSE alongside directional and economic metrics. The exploratory diagnostic comments in the notebook should not be treated as formal proof that every OLS assumption is satisfied.
 
 ## Disclaimer
 
-For educational purposes only. Not investment advice.
+Educational regression-modelling exercise only. It does not establish a profitable trading strategy and is not investment advice.
